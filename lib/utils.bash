@@ -86,7 +86,13 @@ install_version() {
 
 	(
 		mkdir -p "$install_path"
-		cp -r "$ASDF_DOWNLOAD_PATH"/{pandoc,pandoc-lua,pandoc-server} "$install_path"
+		cp -r "$ASDF_DOWNLOAD_PATH"/pandoc "$install_path"
+		if [ -e "$ASDF_DOWNLOAD_PATH"/pandoc-lua ]; then
+			cp -r "$ASDF_DOWNLOAD_PATH"/pandoc-lua "$install_path"
+		fi
+		if [ -e "$ASDF_DOWNLOAD_PATH"/pandoc-server ]; then
+			cp -r "$ASDF_DOWNLOAD_PATH"/pandoc-server "$install_path"
+		fi
 
 		# TODO: Assert pandoc executable exists.
 		local tool_cmd

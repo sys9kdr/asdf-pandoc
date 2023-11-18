@@ -45,7 +45,7 @@ linux*)
 	# https://github.com/jgm/pandoc/releases/download/2.7.3/pandoc-2.7.3-linux.tar.gz
 	platform="linux"
 	if is_older_version ${ASDF_INSTALL_VERSION} ${min_arch_set_gz_version_in_linux}; then
-		download_file=pandoc-${ASDF_INSTALL_VERSION}-${arch}.tar.gz
+		download_file=pandoc-${ASDF_INSTALL_VERSION}-${platform}.tar.gz
 	else
 		download_file=pandoc-${ASDF_INSTALL_VERSION}-${platform}-${arch}.tar.gz
 	fi

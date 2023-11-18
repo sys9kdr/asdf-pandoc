@@ -39,8 +39,8 @@ list_all_versions() {
 # exit 2: $1 is equal $2
 is_older_version() {
 	local v1 v2
-	v1=(${1//./ })
-	v2=(${2//./ })
+	IFS=. read -ar v1 <<<"$1"
+	IFS=. read -ar v2 <<<"$2"
 
 	local i
 	for ((i = 0; i < ${#v1[@]} || i < ${#v2[@]}; i++)); do

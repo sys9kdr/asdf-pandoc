@@ -7,17 +7,54 @@ plugin_dir=$(dirname "$(dirname "$current_script_path")")
 
 # shellcheck source=./lib/utils.bash
 source "${plugin_dir}/lib/utils.bash"
+# Arm support in macOS from 3.1.2
+min_arm_support_version_in_macos="3.1.2"
+# Arm support in Linux from 2.12.0
+# shellcheck disable=SC2034
+min_arm_support_version_in_linux="2.12.0"
+# Containing support arch in filename from 2.8.0
+min_arch_set_gz_version_in_linux="2.8.0"
 
 mkdir -p "$ASDF_DOWNLOAD_PATH"
 
-# TODO: Adapt this to proper extension and adapt extracting strategy.
-release_file="$ASDF_DOWNLOAD_PATH/$TOOL_NAME-$ASDF_INSTALL_VERSION.tar.gz"
+case "$(uname -m)" in
+x86_64) arch="amd64" ;;
+arm64) arch="arm64" ;;
+*) fail "Unsupported architecture" ;;
+esac
 
-# Download tar.gz file to the download directory
-download_release "$ASDF_INSTALL_VERSION" "$release_file"
+DOWNLOAD_URL_PREFIX="https://github.com/jgm/pandoc/releases/download"
 
-#  Extract contents of tar.gz file into the download directory
-tar -xzf "$release_file" -C "$ASDF_DOWNLOAD_PATH" --strip-components=1 || fail "Could not extract $release_file"
+case "$OSTYPE" in
+darwin*)
+	# https://github.com/jgm/pandoc/releases/download/3.1.2/pandoc-3.1.2-arm64-macOS.zip
+	# https://github.com/jgm/pandoc/releases/download/3.1.1/pandoc-3.1.1-macOS.zip
+	platform="macOS"
+	if is_older_version ${ASDF_INSTALL_VERSION} ${min_arm_support_version_in_macos}; then
+		download_file=pandoc-${ASDF_INSTALL_VERSION}-${platform}.zip
+	else
+		download_file=pandoc-${ASDF_INSTALL_VERSION}-${arch}-${platform}.zip
+	fi
+	download_url="${DOWNLOAD_URL_PREFIX}/${ASDF_INSTALL_VERSION}/${download_file}"
+	download_release "$ASDF_INSTALL_VERSION" "$download_file" "$download_url"
+	unzip -j "$download_file" -d "$ASDF_DOWNLOAD_PATH" || fail "Could not extract $download_file"
+	;;
+linux*)
+	# https://github.com/jgm/pandoc/releases/download/2.12/pandoc-2.12-linux-arm64.tar.gz
+	# https://github.com/jgm/pandoc/releases/download/2.8/pandoc-2.8-linux-amd64.tar.gz
+	# https://github.com/jgm/pandoc/releases/download/2.7.3/pandoc-2.7.3-linux.tar.gz
+	platform="linux"
+	if is_older_version ${ASDF_INSTALL_VERSION} ${min_arch_set_gz_version_in_linux}; then
+		download_file=pandoc-${ASDF_INSTALL_VERSION}-${arch}.tar.gz
+	else
+		download_file=pandoc-${ASDF_INSTALL_VERSION}-${platform}-${arch}.tar.gz
+	fi
+	download_url="${DOWNLOAD_URL_PREFIX}/${ASDF_INSTALL_VERSION}/${download_file}"
+	download_release "$ASDF_INSTALL_VERSION" "$download_file" "$download_url"
+	tar -xzf "$download_file" -C "$ASDF_DOWNLOAD_PATH" --strip-components=2 || fail "Could not extract $download_file"
+	;;
+*) fail "Unsupported platform" ;;
+esac
 
-# Remove the tar.gz file since we don't need to keep it
-rm "$release_file"
+# Remove the zip/tar.gz file since we don't need to keep it
+rm "$download_file"

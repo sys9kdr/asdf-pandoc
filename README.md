@@ -6,6 +6,8 @@
 
 </div>
 
+**IT DOESN'T WORK. UNDER DEVELOPMENT**
+
 # Contents
 
 - [Dependencies](#dependencies)
@@ -15,18 +17,13 @@
 
 # Dependencies
 
-**TODO: adapt this section**
-
-- `bash`, `curl`, `tar`, and [POSIX utilities](https://pubs.opengroup.org/onlinepubs/9699919799/idx/utilities.html).
-- `SOME_ENV_VAR`: set this environment variable in your shell config to load the correct version of tool x.
+- `git`, `bash`, `curl`, `tar`, and [POSIX utilities](https://pubs.opengroup.org/onlinepubs/9699919799/idx/utilities.html).
 
 # Install
 
 Plugin:
 
 ```shell
-asdf plugin add pandoc
-# or
 asdf plugin add pandoc https://github.com/sys9kdr/asdf-pandoc.git
 ```
 

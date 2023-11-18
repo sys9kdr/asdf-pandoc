@@ -31,18 +31,45 @@ list_github_tags() {
 }
 
 list_all_versions() {
-	# TODO: Adapt this. By default we simply list the tag names from GitHub releases.
-	# Change this function if pandoc has other means of determining installable versions.
-	list_github_tags
+	list_github_tags | grep -v '^[^0-9]' # remove version starts with non-number
+}
+
+# exit 0: $1 is older than $2
+# exit 1: $1 is newer than $2
+# exit 2: $1 is equal $2
+is_older_version() {
+	local v1 v2
+	mapfile -t v1 <<<"$(echo "$1" | tr '.' '\n')"
+	mapfile -t v2 <<<"$(echo "$2" | tr '.' '\n')"
+
+	local i
+	for ((i = 0; i < ${#v1[@]} || i < ${#v2[@]}; i++)); do
+		if [ -z "${v1[i]:-}" ]; then # TODO: fix this
+			v1+=(0)
+		fi
+
+		if [ -z "${v2[i]:-}" ]; then
+			v2+=(0)
+		fi
+
+		if ((v1[i] < v2[i])); then
+			echo "$1 is older than $2"
+			return 0
+		elif ((v1[i] > v2[i])); then
+			echo "$1 is newer than $2"
+			return 1
+		fi
+	done
+
+	echo "$1 is equal to $2"
+	return 2
 }
 
 download_release() {
 	local version filename url
 	version="$1"
 	filename="$2"
-
-	# TODO: Adapt the release URL convention for pandoc
-	url="$GH_REPO/archive/v${version}.tar.gz"
+	url="$3"
 
 	echo "* Downloading $TOOL_NAME release $version..."
 	curl "${curl_opts[@]}" -o "$filename" -C - "$url" || fail "Could not download $url"
@@ -59,7 +86,7 @@ install_version() {
 
 	(
 		mkdir -p "$install_path"
-		cp -r "$ASDF_DOWNLOAD_PATH"/* "$install_path"
+		cp -r "$ASDF_DOWNLOAD_PATH"/{pandoc,pandoc-lua,pandoc-server} "$install_path"
 
 		# TODO: Assert pandoc executable exists.
 		local tool_cmd

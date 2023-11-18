@@ -39,8 +39,8 @@ list_all_versions() {
 # exit 2: $1 is equal $2
 is_older_version() {
 	local v1 v2
-	mapfile -t v1 <<<"$(echo "$1" | tr '.' '\n')"
-	mapfile -t v2 <<<"$(echo "$2" | tr '.' '\n')"
+	v1=(${1//./ })
+	v2=(${2//./ })
 
 	local i
 	for ((i = 0; i < ${#v1[@]} || i < ${#v2[@]}; i++)); do

@@ -6,7 +6,7 @@
 
 </div>
 
-**IT DOESN'T WORK. UNDER DEVELOPMENT**
+**Note: This project is currently in development, so it might not work as expected.**
 
 # Contents
 

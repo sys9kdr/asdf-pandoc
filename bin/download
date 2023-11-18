@@ -30,7 +30,7 @@ darwin*)
 	# https://github.com/jgm/pandoc/releases/download/3.1.2/pandoc-3.1.2-arm64-macOS.zip
 	# https://github.com/jgm/pandoc/releases/download/3.1.1/pandoc-3.1.1-macOS.zip
 	platform="macOS"
-	if is_older_version ${ASDF_INSTALL_VERSION} ${min_arm_support_version_in_macos}; then
+	if is_older_version "${ASDF_INSTALL_VERSION}" ${min_arm_support_version_in_macos}; then
 		download_file=pandoc-${ASDF_INSTALL_VERSION}-${platform}.zip
 	else
 		download_file=pandoc-${ASDF_INSTALL_VERSION}-${arch}-${platform}.zip
@@ -44,7 +44,7 @@ linux*)
 	# https://github.com/jgm/pandoc/releases/download/2.8/pandoc-2.8-linux-amd64.tar.gz
 	# https://github.com/jgm/pandoc/releases/download/2.7.3/pandoc-2.7.3-linux.tar.gz
 	platform="linux"
-	if is_older_version ${ASDF_INSTALL_VERSION} ${min_arch_set_gz_version_in_linux}; then
+	if is_older_version "${ASDF_INSTALL_VERSION}" ${min_arch_set_gz_version_in_linux}; then
 		download_file=pandoc-${ASDF_INSTALL_VERSION}-${platform}.tar.gz
 	else
 		download_file=pandoc-${ASDF_INSTALL_VERSION}-${platform}-${arch}.tar.gz

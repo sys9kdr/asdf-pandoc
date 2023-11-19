@@ -31,7 +31,7 @@ darwin*)
 	# https://github.com/jgm/pandoc/releases/download/3.1.2/pandoc-3.1.2-x86_64-macOS.zip
 	# https://github.com/jgm/pandoc/releases/download/3.1.1/pandoc-3.1.1-macOS.zip
 	platform="macOS"
-	arch=${arch//amd64/x86_64/}
+	arch=${arch//amd64/x86_64}
 	if is_older_version "${ASDF_INSTALL_VERSION}" ${min_arm_support_version_in_macos}; then
 		download_file=pandoc-${ASDF_INSTALL_VERSION}-${platform}.zip
 	else

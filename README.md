@@ -6,8 +6,6 @@
 
 </div>
 
-**Note: This project is currently in development, so it might not work as expected.**
-
 # Contents
 
 - [Dependencies](#dependencies)

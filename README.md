@@ -1,3 +1,5 @@
+This plugin is no longer maintained, plz use https://github.com/Fbrisset/asdf-pandoc
+
 <div align="center">
 
 # asdf-pandoc [![Build](https://github.com/sys9kdr/asdf-pandoc/actions/workflows/build.yml/badge.svg)](https://github.com/sys9kdr/asdf-pandoc/actions/workflows/build.yml) [![Lint](https://github.com/sys9kdr/asdf-pandoc/actions/workflows/lint.yml/badge.svg)](https://github.com/sys9kdr/asdf-pandoc/actions/workflows/lint.yml)
